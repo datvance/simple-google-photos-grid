@@ -246,7 +246,7 @@ EOD;
     global $wpdb;
 
     $wpdb->query(
-      "DELETE FROM $wpdb->options  WHERE `option_name` LIKE `%".self::name()."%`"
+      "DELETE FROM $wpdb->options  WHERE `option_name` LIKE '%".self::name()."%'"
     );
   }
 
