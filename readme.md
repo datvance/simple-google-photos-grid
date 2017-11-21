@@ -1,5 +1,5 @@
 # Simple Google Photos WordPress Plugin
-Provides a WordPress widget to display photos from a public Google Photos album.
+Provides a WordPress widget to display photos from a public Google Photos album. [See a demo](https://josheli.com).
 
 ## Installation and Usage
 [Install](https://codex.wordpress.org/Managing_Plugins#Installing_Plugins) as you would any other WordPress plugin.
