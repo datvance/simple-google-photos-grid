@@ -14,6 +14,10 @@ Go to Appearance -> Widgets and a new widget named Simple Google Photos Grid sho
 
 ## Notes
 Your album must be "public", which means you need to go into Google Photos on the web and set "Sharing options" to on, i.e. "Anyone with the link can see these photos and the people who've been invited or joined." 
+ 
+Google Photos Public Sharing Settings:
+
+<img src="https://josheli.com/wp-content/uploads/Screen-Shot-2017-11-20-at-10.40.34-PM.png" width="350" alt="Required settings for a Google Photos album to be public and accessible by the Simple Google Photos Grid WordPress plugin.">
 
 This plugin is pretty hacky since the above doesn't really make the album public in the sense that Picasa used to, or Flickr does, etc. Anyway, there is no reliable Google Photos api. The Picasa API is broken and doesn't list new albums made in Photos, and not all albums show up in Google Drive. So, read [this](https://kunnas.com/google-photos-is-a-disaster/) and [this](https://productforums.google.com/forum/#!topic/photos/WuqfNazcqh4) if you're interested in this mess.
 
