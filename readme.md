@@ -1,19 +1,30 @@
 # Simple Google Photos WordPress Plugin
-Provides a WordPress widget to display photos from a public Google Photos album. [See a demo](https://josheli.com). Read more [about the plugin](https://josheli.com/knob/2017/11/21/simple-google-photos-a-wordpress-plugin/).
+Provides a WordPress widget and shortcode to display photos from a public Google Photos album. [See a demo and read more about the plugin](https://josheli.com/knob/2017/11/21/simple-google-photos-a-wordpress-plugin/).
 
-## Installation and Usage
+## Installation
 [Install](https://codex.wordpress.org/Managing_Plugins#Installing_Plugins) as you would any other WordPress plugin.
 
+## Widget
 Go to Appearance -> Widgets and a new widget named Simple Google Photos Grid should be available to use. Drag to your desired widget area and configure.
 
-## Configuration Options
  - Title: Heading of the widget on your site. Default to empty.
  - Album URL: The full URL to your public gallery on Google Photos. Ideally should be a short, "shared" link (such as https://photos.app.goo.gl/G8EOLs5YtESchh4g1), but any Google Photos URL should do.
  - Num Photos to Show: Even numbers probably work best. There's a maximum number, not sure what it is, but it's pretty low.
  - Cache Interval (in minutes): How long to cache photo URLs before checking the album on Google again. 0 for no cache.
+ 
+## Shortcode
+Place the shortcode in a post, page or theme.
+`[simple_google_photos_grid album-url="https://photos.app.goo.gl/G8EOLs5YtESchh4g1"]`
+
+Available attributes are:
+- album-url: (required) the url to a public Google Photos album
+- number-photos: (optional) number of photos to display, defaults to 4
+- cache-interval: (optional) length, in minutes, to cache the photo urls retrieved from Google, defaults to 15
+
+`[simple_google_photos_grid album-url="https://photos.app.goo.gl/G8EOLs5YtESchh4g1" number-photos="6" cache-interval="120"]`
 
 ## Notes
-Your album must be "public", which means you need to go into Google Photos on the web and set "Sharing options" to on, i.e. "Anyone with the link can see these photos and the people who've been invited or joined." 
+Your album on Google Photos must be "public", which means you need to go into Google Photos on the web and set "Sharing options" to on, i.e. "Anyone with the link can see these photos and the people who've been invited or joined." 
  
 Google Photos Public Sharing Settings:
 

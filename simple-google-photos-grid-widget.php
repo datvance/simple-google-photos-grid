@@ -1,30 +1,23 @@
 <?php
 
+include_once 'Simple_Google_Photos_Grid.php';
+
 /**
  * Widget to display Google Photos from a public album.
  */
 class Simple_Google_Photos_Grid_Widget extends WP_Widget
 {
-
-  /**
-   * Default length (in minutes) to cache the photo urls retrieved from Google
-   */
-  const CACHE_INTERVAL = 15;
-
-  /**
-   * Default number of photos to display in the widget
-   */
-  const NUMBER_PHOTOS = 4;
-
   /**
    * Register widget with WordPress.
    */
   function __construct()
   {
+    $name = Simple_Google_Photos_Grid::name();
+
     parent::__construct(
-      self::name(),
-      __( ucwords(str_replace('-', ' ', self::name())), self::name() ),
-      [ 'description' => __( 'Show latest photos from a public Google Photos album', self::name() ), ]
+      $name,
+      __( ucwords(str_replace('-', ' ', $name)), $name ),
+      [ 'description' => __( 'Show latest photos from a public Google Photos album', $name ), ]
     );
   }
 
@@ -38,27 +31,24 @@ class Simple_Google_Photos_Grid_Widget extends WP_Widget
    */
   public function widget( $args, $instance )
   {
+    $cache_interval = $instance['cache-interval']
+      ? intval($instance['cache-interval'])
+      : Simple_Google_Photos_Grid::CACHE_INTERVAL;
+
+    $num_photos = $instance['number-photos']
+      ? intval($instance['number-photos'])
+      : Simple_Google_Photos_Grid::NUMBER_PHOTOS;
+
+    $grid = new Simple_Google_Photos_Grid();
+
+    $photos = $grid->get_photos($instance['album-url'], $cache_interval);
+
     echo $args['before_widget'];
     if ( ! empty( $instance['title'] ) )
     {
       echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ). $args['after_title'];
     }
-
-    $cache_interval = $instance['cache-interval'] ? $instance['cache-interval'] : self::CACHE_INTERVAL;
-    $num_photos = $instance['number-photos'] ? $instance['number-photos'] : self::NUMBER_PHOTOS;
-
-    $photos = $this->get_photos($instance['album-url'], $cache_interval);
-
-    $html = '<style>'.$this->widget_css().'</style>';
-    $html .= '<div id="'.$this->id_base.'">';
-    foreach(array_slice($photos, 0, $num_photos) as $i => $photo) {
-      $html .= '<div class="'.self::name() . '-cell">';
-      $html .= '<a href="'.$instance['album-url'].'" target="_blank"><img src="'.$photo.'" alt="" class="'.self::name().'-image"></a>';
-      $html .= '</div>';
-    }
-    $html .= '</div>';
-    $html .= '<script>'.$this->widget_js().'</script>';
-    echo $html;
+    echo $grid->html($photos, $num_photos, $instance['album-url']);
 
     echo $args['after_widget'];
   }
@@ -81,8 +71,8 @@ class Simple_Google_Photos_Grid_Widget extends WP_Widget
     else {
       $album_url = '';
       $title = '';
-      $cache_interval = self::CACHE_INTERVAL;
-      $num_photos = self::NUMBER_PHOTOS;
+      $cache_interval = Simple_Google_Photos_Grid::CACHE_INTERVAL;
+      $num_photos = Simple_Google_Photos_Grid::NUMBER_PHOTOS;
     }
     ?>
     <p>
@@ -122,140 +112,5 @@ class Simple_Google_Photos_Grid_Widget extends WP_Widget
     $instance['album-url'] = esc_url_raw( $new_instance['album-url'], ['https'] );
 
     return $instance;
-  }
-
-  /**
-   * Retrieve photos from cache or from google
-   *
-   * @param string $album_url A google photos album short or long url
-   * @param integer $cache_interval Length in minutes to cache (0) for no cache
-   *
-   * @return array
-   */
-  protected function get_photos($album_url, $cache_interval) {
-    $album = get_option($this->album_option_name($album_url));
-    if($album &&
-      (isset($album['photos']) && !empty($album['photos'])) &&
-      (isset($album['cache-time']) && ($album['cache-time'] + ($cache_interval * 60) > time()))) {
-        $photos = $album['photos'];
-    }
-    else {
-      $photos = $this->get_photos_from_google($album_url);
-      if($cache_interval) {
-        $this->cache_album($album_url, $photos);
-      }
-    }
-    return $photos;
-  }
-
-  /**
-   * Hackety-hack way to retrieve photos from a public album since google has no working api for google photos
-   * Read: https://kunnas.com/google-photos-is-a-disaster/
-   * And: https://productforums.google.com/forum/#!topic/photos/WuqfNazcqh4
-   *
-   * @param $album_url
-   *
-   * @return array
-   */
-  protected function get_photos_from_google($album_url) {
-    $photos = [];
-    $response = wp_remote_get( $album_url );
-    if ( !is_wp_error( $response ) ) {
-      $body = $response['body'];
-      preg_match_all('@\["AF1Q.*?",\["(.*?)"\,@', $body, $urls);
-      if(isset($urls[1])) $photos = $urls[1];
-    }
-    return $photos;
-  }
-
-  /**
-   * A unique name for the widget option, per album
-   *
-   * @param $album_url
-   *
-   * @return string
-   */
-  protected function album_option_name($album_url) {
-    return self::name() . '-' . md5($album_url);
-  }
-
-  /**
-   * "Cache" the album urls in the options table
-   * @param $album_url
-   * @param $photos
-   */
-  protected function cache_album($album_url, $photos) {
-    $option_value = [
-      'cache-time' => time(),
-      'photos' => $photos
-    ];
-    add_option($this->album_option_name($album_url), $option_value);
-  }
-
-  /**
-   * Style block CSS for the widget, why not?
-   *
-   * @return string
-   */
-  protected function widget_css() {
-    $cell_class = self::name() . '-cell';
-    $image_class = self::name() . '-image';
-
-    return <<<EOD
-      div#{$this->id_base} {
-        width:100%;
-        height:100%;
-        overflow:hidden;      
-      }
-      div.{$cell_class} {
-        box-sizing:border-box;
-        padding:5px;
-        float:left;
-        width:50%;
-      }
-      img.{$image_class} {
-        object-fit: cover;
-      }
-EOD;
-  }
-
-  /**
-   * Script block js for the widget, why not?
-   *
-   * @return string
-   */
-  protected function widget_js() {
-
-    $cell_class = self::name() . '-cell';
-    $image_class = self::name() . '-image';
-
-    return <<<EOD
-      (function() {
-        if( window.jQuery ){
-          var width = jQuery("div.{$cell_class}").first().width();
-          jQuery("img.{$image_class}").css("width", width).css("height", width);
-        }
-      })();
-EOD;
-  }
-
-  /**
-   * Hook to run when uninstalling the plugin
-   */
-  public static function uninstall() {
-    global $wpdb;
-
-    $wpdb->query(
-      "DELETE FROM $wpdb->options  WHERE `option_name` LIKE '%".self::name()."%'"
-    );
-  }
-
-  /**
-   * Used frequently
-   *
-   * @return string
-   */
-  public static function name() {
-    return basename(__DIR__);
   }
 }
