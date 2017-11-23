@@ -159,10 +159,12 @@ EOD;
     return <<<EOD
       (function() {
         if( window.jQuery ){
-          jQuery("div.{$container_class}").each(function(i){
-            var container = jQuery(this);
-            var width = container.find("div.{$cell_class}").first().width();
-            container.find("img.{$image_class}").css("width", width).css("height", width);          
+          jQuery( document ).ready(function() {
+            jQuery("div.{$container_class}").each(function(i){
+              var container = jQuery(this);
+              var width = container.find("div.{$cell_class}").first().width();
+              container.find("img.{$image_class}").css("width", width).css("height", width);          
+            });          
           });
         }
       })();
