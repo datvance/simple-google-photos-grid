@@ -15,21 +15,29 @@ class Simple_Google_Photos_Grid
    */
   const NUMBER_PHOTOS = 4;
 
+  protected static $css_loaded = false;
+  protected static $js_loaded = false;
+
   public function html($photos, $num_photos_to_show, $link_url) {
 
     $container_class = self::name();
     $cell_class = self::name() . '-cell';
     $image_class = self::name() . '-image';
 
-    $html = '<style>' . $this->widget_css() . '</style>';
-    $html .= '<div id="' . $container_class . '">';
+    $html = '';
+    if(!self::$css_loaded) {
+      $html .= '<style>' . $this->grid_css() . '</style>';
+    }
+    $html .= '<div class="' . $container_class . '">';
     foreach(array_slice($photos, 0, $num_photos_to_show) as $i => $photo) {
       $html .= '<div class="'.$cell_class . '">';
       $html .= '<a href="' . $link_url . '" target="_blank"><img src="' . $photo . '" alt="Google Photo" class="' . $image_class . '"></a>';
       $html .= '</div>';
     }
     $html .= '</div>';
-    $html .= '<script>' . $this->widget_js() . '</script>';
+    if(!self::$js_loaded) {
+      $html .= '<script>' . $this->grid_js() . '</script>';
+    }
 
     return $html;
   }
@@ -107,13 +115,17 @@ class Simple_Google_Photos_Grid
    *
    * @return string
    */
-  protected function widget_css() {
+  protected function grid_css() {
+
+    if(self::$css_loaded) return '';
+    self::$css_loaded = true;
+
     $container_class = self::name();
     $cell_class = self::name() . '-cell';
     $image_class = self::name() . '-image';
 
     return <<<EOD
-      div#{$container_class} {
+      div.{$container_class} {
         width:100%;
         height:100%;
         overflow:hidden;      
@@ -135,16 +147,23 @@ EOD;
    *
    * @return string
    */
-  protected function widget_js() {
+  protected function grid_js() {
 
+    if(self::$js_loaded) return '';
+    self::$js_loaded = true;
+
+    $container_class = self::name();
     $cell_class = self::name() . '-cell';
     $image_class = self::name() . '-image';
 
     return <<<EOD
       (function() {
         if( window.jQuery ){
-          var width = jQuery("div.{$cell_class}").first().width();
-          jQuery("img.{$image_class}").css("width", width).css("height", width);
+          jQuery("div.{$container_class}").each(function(i){
+            var container = jQuery(this);
+            var width = container.find("div.{$cell_class}").first().width();
+            container.find("img.{$image_class}").css("width", width).css("height", width);          
+          });
         }
       })();
 EOD;
