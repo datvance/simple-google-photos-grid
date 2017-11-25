@@ -10,6 +10,7 @@ Go to Appearance -> Widgets and a new widget named Simple Google Photos Grid sho
  - Title: Heading of the widget on your site. Default to empty.
  - Album URL: The full URL to your public gallery on Google Photos. Ideally should be a short, "shared" link (such as https://photos.app.goo.gl/G8EOLs5YtESchh4g1), but any Google Photos URL should do.
  - Num Photos to Show: Even numbers probably work best. There's a maximum number, not sure what it is, but it's pretty low.
+ - Num Photos per Row: How many photos to show per row? Probably some number that works well with Num Photos.
  - Cache Interval (in minutes): How long to cache photo URLs before checking the album on Google again. 0 for no cache.
  
 ## Shortcode
@@ -19,9 +20,10 @@ Place the shortcode in a post, page or theme.
 Available attributes are:
 - album-url: (required) the url to a public Google Photos album
 - number-photos: (optional) number of photos to display, defaults to 4
+- number-photos-per-row: (optional) number of photos per row, defaults to 2
 - cache-interval: (optional) length, in minutes, to cache the photo urls retrieved from Google, defaults to 15
 
-`[simple_google_photos_grid album-url="https://photos.app.goo.gl/G8EOLs5YtESchh4g1" number-photos="6" cache-interval="120"]`
+`[simple_google_photos_grid album-url="https://photos.app.goo.gl/G8EOLs5YtESchh4g1" number-photos="6" number-photos-per-row="3" cache-interval="120"]`
 
 ## Notes
 Your album on Google Photos must be "public", which means you need to go into Google Photos on the web and set "Sharing options" to on, i.e. "Anyone with the link can see these photos and the people who've been invited or joined." 

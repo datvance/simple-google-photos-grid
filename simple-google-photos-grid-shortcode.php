@@ -23,10 +23,14 @@ class Simple_Google_Photos_Grid_Shortcode
       ? intval($attributes['number-photos'])
       : Simple_Google_Photos_Grid::NUMBER_PHOTOS;
 
+    $num_photos_per_row = $attributes['number-photos-per-row']
+      ? intval($attributes['number-photos-per-row'])
+      : Simple_Google_Photos_Grid::NUMBER_PHOTOS_PER_ROW;
+
     $grid = new Simple_Google_Photos_Grid();
 
     $photos = $grid->get_photos($attributes['album-url'], $cache_interval);
 
-    return $grid->html($photos, $num_photos, $attributes['album-url']);
+    return $grid->html($photos, $num_photos, $num_photos_per_row, $attributes['album-url']);
   }
 }

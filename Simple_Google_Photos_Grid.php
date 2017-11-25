@@ -15,22 +15,28 @@ class Simple_Google_Photos_Grid
    */
   const NUMBER_PHOTOS = 4;
 
+  /**
+   * Default number of photos per row, thus 2x2 grid
+   */
+  const NUMBER_PHOTOS_PER_ROW = 2;
+
   protected static $css_loaded = false;
   protected static $js_loaded = false;
 
-  public function html($photos, $num_photos_to_show, $link_url) {
+  public function html($photos, $num_photos_to_show, $num_photos_per_row, $link_url) {
 
     $container_class = self::name();
     $cell_class = self::name() . '-cell';
     $image_class = self::name() . '-image';
 
+    $cell_width = round(100 / $num_photos_per_row);
+
     $html = '';
-    if(!self::$css_loaded) {
-      $html .= '<style>' . $this->grid_css() . '</style>';
-    }
+    $css = !self::$css_loaded ? $this->grid_css() : '';
+    $html .= '<style>' . $css . '</style>';
     $html .= '<div class="' . $container_class . '">';
     foreach(array_slice($photos, 0, $num_photos_to_show) as $i => $photo) {
-      $html .= '<div class="'.$cell_class . '">';
+      $html .= '<div class="'.$cell_class . '" style="width:'.$cell_width.'%">';
       $html .= '<a href="' . $link_url . '" target="_blank"><img src="' . $photo . '" alt="Google Photo" class="' . $image_class . '"></a>';
       $html .= '</div>';
     }
@@ -134,7 +140,6 @@ class Simple_Google_Photos_Grid
         box-sizing:border-box;
         padding:5px;
         float:left;
-        width:50%;
       }
       img.{$image_class} {
         object-fit: cover;

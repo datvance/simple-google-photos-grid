@@ -3,7 +3,7 @@
  * Plugin Name: Simple Google Photos Grid
  * Plugin URI: https://github.com/datvance/simple-google-photos-grid
  * Description: Show the latest photos from a public Google Photos album.
- * Version: 1.2
+ * Version: 1.3
  * Author: Josheli
  * Author URI: https://josheli.com
  * License: GPL2

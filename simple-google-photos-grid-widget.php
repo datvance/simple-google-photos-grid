@@ -39,6 +39,10 @@ class Simple_Google_Photos_Grid_Widget extends WP_Widget
       ? intval($instance['number-photos'])
       : Simple_Google_Photos_Grid::NUMBER_PHOTOS;
 
+    $num_photos_per_row = $instance['number-photos-per-row']
+      ? intval($instance['number-photos-per-row'])
+      : Simple_Google_Photos_Grid::NUMBER_PHOTOS_PER_ROW;
+
     $grid = new Simple_Google_Photos_Grid();
 
     $photos = $grid->get_photos($instance['album-url'], $cache_interval);
@@ -48,7 +52,7 @@ class Simple_Google_Photos_Grid_Widget extends WP_Widget
     {
       echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ). $args['after_title'];
     }
-    echo $grid->html($photos, $num_photos, $instance['album-url']);
+    echo $grid->html($photos, $num_photos, $num_photos_per_row, $instance['album-url']);
 
     echo $args['after_widget'];
   }
@@ -67,12 +71,14 @@ class Simple_Google_Photos_Grid_Widget extends WP_Widget
       $title = $instance['title'];
       $cache_interval = $instance['cache-interval'];
       $num_photos = $instance['number-photos'];
+      $num_photos_per_row = $instance['number-photos-per-row'];
     }
     else {
       $album_url = '';
       $title = '';
       $cache_interval = Simple_Google_Photos_Grid::CACHE_INTERVAL;
       $num_photos = Simple_Google_Photos_Grid::NUMBER_PHOTOS;
+      $num_photos_per_row = Simple_Google_Photos_Grid::NUMBER_PHOTOS_PER_ROW;
     }
     ?>
     <p>
@@ -86,6 +92,10 @@ class Simple_Google_Photos_Grid_Widget extends WP_Widget
     <p>
       <label for="<?php echo $this->get_field_id( 'number-photos' ); ?>"><?php _e( 'Num Photos to Show:' ); ?></label>
       <input class="widefat" id="<?php echo $this->get_field_id( 'number-photos' ); ?>" name="<?php echo $this->get_field_name( 'number-photos' ); ?>" type="number" min="1" step="1" value="<?php echo esc_attr( $num_photos ); ?>">
+    </p>
+    <p>
+      <label for="<?php echo $this->get_field_id( 'number-photos-per-row' ); ?>"><?php _e( 'Num Photos Per Row:' ); ?></label>
+      <input class="widefat" id="<?php echo $this->get_field_id( 'number-photos-per-row' ); ?>" name="<?php echo $this->get_field_name( 'number-photos-per-row' ); ?>" type="number" min="1" step="1" value="<?php echo esc_attr( $num_photos_per_row ); ?>">
     </p>
     <p>
       <label for="<?php echo $this->get_field_id( 'cache-interval' ); ?>"><?php _e( 'Cache Interval (minutes):' ); ?></label>
@@ -109,6 +119,7 @@ class Simple_Google_Photos_Grid_Widget extends WP_Widget
     $instance['title'] = strip_tags($new_instance['title']);
     $instance['cache-interval'] = intval($new_instance['cache-interval']);
     $instance['number-photos'] = intval($new_instance['number-photos']);
+    $instance['number-photos-per-row'] = intval($new_instance['number-photos-per-row']);
     $instance['album-url'] = esc_url_raw( $new_instance['album-url'], ['https'] );
 
     return $instance;
