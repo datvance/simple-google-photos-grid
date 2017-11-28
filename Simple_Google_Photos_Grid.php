@@ -29,7 +29,7 @@ class Simple_Google_Photos_Grid
     $cell_class = self::name() . '-cell';
     $image_class = self::name() . '-image';
 
-    $cell_width = round(100 / $num_photos_per_row);
+    $cell_width = floor(100 / $num_photos_per_row);
 
     $html = '';
     $css = !self::$css_loaded ? $this->grid_css() : '';
