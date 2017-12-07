@@ -1,5 +1,5 @@
 # Simple Google Photos WordPress Plugin
-Provides a WordPress widget and shortcode to display photos from a public Google Photos album. [See a demo and read more about the plugin](https://josheli.com/knob/2017/11/21/simple-google-photos-a-wordpress-plugin/).
+[Get the plugin here](https://wordpress.org/plugins/simple-google-photos-grid/). Provides a WordPress widget and shortcode to display photos from a public Google Photos album. [See a demo and read more about the plugin](https://josheli.com/knob/2017/11/21/simple-google-photos-a-wordpress-plugin/).
 
 ## Installation
 [Install](https://codex.wordpress.org/Managing_Plugins#Installing_Plugins) as you would any other WordPress plugin.
