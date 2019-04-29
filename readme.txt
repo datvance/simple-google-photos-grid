@@ -2,7 +2,7 @@
 Contributors: uwonder
 Tags: album, gallery, photos, Google Photos
 Requires at least: 4.0
-Tested up to: 4.9
+Tested up to: 5.1.1
 Stable tag: trunk
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
