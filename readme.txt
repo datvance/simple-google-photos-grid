@@ -53,6 +53,9 @@ Available attributes are:
 
 == Changelog ==
 
+= 1.4 =
+* Fixed uninstall and shortcode bugs
+
 = 1.3 =
 * Added "number photos per row" configuration/attribute to have grids other than 2x2
 
