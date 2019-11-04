@@ -12,5 +12,5 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) )
 	exit;
 
-include_once __DIR__ . '/simple-google-photos-grid-widget.php';
-Simple_Google_Photo_Grid_Widget::uninstall();
+include_once __DIR__ . '/Simple_Google_Photos_Grid.php';
+Simple_Google_Photos_Grid::uninstall();

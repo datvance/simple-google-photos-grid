@@ -7,7 +7,7 @@ include_once 'Simple_Google_Photos_Grid.php';
  */
 class Simple_Google_Photos_Grid_Shortcode
 {
-  public function shortcode($attributes = [], $content = null, $tag = '') {
+  public static function shortcode($attributes = [], $content = null, $tag = '') {
 
     $attributes = array_change_key_case((array)$attributes, CASE_LOWER);
 
