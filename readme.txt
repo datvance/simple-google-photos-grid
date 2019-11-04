@@ -53,6 +53,9 @@ Available attributes are:
 
 == Changelog ==
 
+= 1.5 =
+* Fixed notices in shortcode
+
 = 1.4 =
 * Fixed uninstall and shortcode bugs
 

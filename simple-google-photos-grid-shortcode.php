@@ -15,15 +15,15 @@ class Simple_Google_Photos_Grid_Shortcode
       return '';
     }
 
-    $cache_interval = $attributes['cache-interval']
+    $cache_interval = isset($attributes['cache-interval'])
       ? intval($attributes['cache-interval'])
       : Simple_Google_Photos_Grid::CACHE_INTERVAL;
 
-    $num_photos = $attributes['number-photos']
+    $num_photos = isset($attributes['number-photos'])
       ? intval($attributes['number-photos'])
       : Simple_Google_Photos_Grid::NUMBER_PHOTOS;
 
-    $num_photos_per_row = $attributes['number-photos-per-row']
+    $num_photos_per_row = isset($attributes['number-photos-per-row'])
       ? intval($attributes['number-photos-per-row'])
       : Simple_Google_Photos_Grid::NUMBER_PHOTOS_PER_ROW;
 
