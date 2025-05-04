@@ -11,7 +11,9 @@ class Simple_Google_Photos_Grid_Shortcode
 
     $attributes = array_change_key_case((array)$attributes, CASE_LOWER);
 
-    if(!isset($attributes['album-url']) || substr($attributes['album-url'], 0, 8) != 'https://') {
+    $grid = new Simple_Google_Photos_Grid();
+
+    if(!$grid->isValidAlbumUrl($attributes['album-url'])) {
       return '';
     }
 
@@ -26,8 +28,6 @@ class Simple_Google_Photos_Grid_Shortcode
     $num_photos_per_row = isset($attributes['number-photos-per-row'])
       ? intval($attributes['number-photos-per-row'])
       : Simple_Google_Photos_Grid::NUMBER_PHOTOS_PER_ROW;
-
-    $grid = new Simple_Google_Photos_Grid();
 
     $photos = $grid->get_photos($attributes['album-url'], $cache_interval);
 
