@@ -106,7 +106,7 @@ class Simple_Google_Photos_Grid
       return false;
     }
 
-    if(!isset($url['host']) || !in_array($url['host'], self::$valid_domains)) {
+    if(!isset($url['host']) || !in_array($url['host'], $this->valid_domains)) {
       return false;
     }
 
