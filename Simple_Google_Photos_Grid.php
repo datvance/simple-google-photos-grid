@@ -23,6 +23,11 @@ class Simple_Google_Photos_Grid
   protected static $css_loaded = false;
   protected static $js_loaded = false;
 
+  protected array $valid_domains = [
+    'photos.app.goo.gl',
+    'photos.google.com',
+  ];
+
   public function html($photos, $num_photos_to_show, $num_photos_per_row, $link_url) {
 
     $container_class = self::name();
@@ -83,13 +88,31 @@ class Simple_Google_Photos_Grid
    */
   protected function get_photos_from_google($album_url) {
     $photos = [];
-    $response = wp_remote_get( $album_url );
+    $response = wp_safe_remote_get( $album_url );
     if ( !is_wp_error( $response ) ) {
       $body = $response['body'];
       preg_match_all('@\["AF1Q.*?",\["(.*?)"\,@', $body, $urls);
       if(isset($urls[1])) $photos = $urls[1];
     }
     return $photos;
+  }
+
+  public function isValidAlbumUrl($album_url): bool {
+
+    if(!is_string($album_url)) return false;
+
+    $album_url = strtolower(trim($album_url));
+    $url = parse_url($album_url);
+
+    if(!isset($url['scheme']) || $url['scheme'] !== 'https') {
+      return false;
+    }
+
+    if(!isset($url['host']) || !in_array($url['host'], $this->valid_domains)) {
+      return false;
+    }
+
+    return true;
   }
 
   /**
@@ -134,7 +157,7 @@ class Simple_Google_Photos_Grid
       div.{$container_class} {
         width:100%;
         height:100%;
-        overflow:hidden;      
+        overflow:hidden;
       }
       div.{$cell_class} {
         box-sizing:border-box;
@@ -168,8 +191,8 @@ EOD;
             jQuery("div.{$container_class}").each(function(i){
               var container = jQuery(this);
               var width = container.find("div.{$cell_class}").first().width();
-              container.find("img.{$image_class}").css("width", width).css("height", width);          
-            });          
+              container.find("img.{$image_class}").css("width", width).css("height", width);
+            });
           });
         }
       })();

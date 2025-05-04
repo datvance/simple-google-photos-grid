@@ -2,7 +2,7 @@
 Contributors: uwonder
 Tags: album, gallery, photos, Google Photos
 Requires at least: 4.0
-Tested up to: 5.6
+Tested up to: 6.8.1
 Stable tag: trunk
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,7 +30,7 @@ No support is provided. Probably no features will be added. You are free to ask,
 Go to Appearance -> Widgets and a new widget named Simple Google Photos Grid should be available to use. Drag to your desired widget area and configure.
 
  - Title: Heading of the widget on your site. Default to empty.
- - Album URL: The full URL to your public gallery on Google Photos. Ideally should be a short, "shared" link (such as https://photos.app.goo.gl/G8EOLs5YtESchh4g1), but any Google Photos URL should do.
+ - Album URL: The full URL to your public gallery on Google Photos. URL must use one of the following domains: 'photos.app.goo.gl' or 'photos.google.com'. Ideally should be the short, "shared" link (such as https://photos.app.goo.gl/G8EOLs5YtESchh4g1z).
  - Num Photos to Show: Even numbers probably work best. There's a maximum number, not sure what it is, but it's pretty low.
  - Num Photos per Row: How many photos to show per row? Probably some number that works well with Num Photos.
  - Cache Interval (in minutes): How long to cache photo URLs before checking the album on Google again. 0 for no cache.
@@ -40,7 +40,7 @@ Place the shortcode in a post, page or theme.
 `[simple_google_photos_grid album-url="https://photos.app.goo.gl/G8EOLs5YtESchh4g1"]`
 
 Available attributes are:
-- album-url: (required) the url to a public Google Photos album
+- album-url: (required) the url to a public Google Photos album, domain must be one of 'photos.app.goo.gl' or 'photos.google.com'
 - number-photos: (optional) number of photos to display, defaults to 4
 - number-photos-per-row: (optional) number of photos per row, defaults to 2
 - cache-interval: (optional) length, in minutes, to cache the photo urls retrieved from Google, defaults to 15
@@ -52,6 +52,9 @@ Available attributes are:
 1. Two grids on a page, one placed with a shortcode and one placed with a widget.
 
 == Changelog ==
+
+= 1.6 =
+* Fix CVE-2025-46503
 
 = 1.5 =
 * Fixed notices in shortcode

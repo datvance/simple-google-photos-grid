@@ -45,6 +45,10 @@ class Simple_Google_Photos_Grid_Widget extends WP_Widget
 
     $grid = new Simple_Google_Photos_Grid();
 
+    if(!$grid->isValidAlbumUrl($instance['album-url'])) {
+      return;
+    }
+
     $photos = $grid->get_photos($instance['album-url'], $cache_interval);
 
     echo $args['before_widget'];
@@ -116,12 +120,20 @@ class Simple_Google_Photos_Grid_Widget extends WP_Widget
    */
   public function update( $new_instance, $old_instance ) {
     $instance = [];
+
+    $grid = new Simple_Google_Photos_Grid();
+
+    if($grid->isValidAlbumUrl($new_instance['album-url'])) {
+      $instance['album-url'] = esc_url_raw( $new_instance['album-url'], ['https'] );
+    }
+    else {
+      return false;
+    }
+
     $instance['title'] = strip_tags($new_instance['title']);
     $instance['cache-interval'] = intval($new_instance['cache-interval']);
     $instance['number-photos'] = intval($new_instance['number-photos']);
     $instance['number-photos-per-row'] = intval($new_instance['number-photos-per-row']);
-    $instance['album-url'] = esc_url_raw( $new_instance['album-url'], ['https'] );
-
     return $instance;
   }
 }
