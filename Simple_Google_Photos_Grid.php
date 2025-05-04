@@ -99,7 +99,7 @@ class Simple_Google_Photos_Grid
 
   public function isValidAlbumUrl($album_url): bool {
 
-    if(!is_string($$album_url)) return false;
+    if(!is_string($album_url)) return false;
 
     $album_url = strtolower(trim($album_url));
     $url = parse_url($album_url);
